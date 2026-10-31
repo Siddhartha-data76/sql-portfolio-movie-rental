@@ -82,7 +82,7 @@ JOIN customer c
 ON c.customer_id = p.customer_id
 JOIN store s ON
 s.store_id = st.store_id
-GROUP BY p.customer_id, s.store_id
+GROUP BY p.customer_id, s.store_id, c.first_name, c.last_name
 )
 SELECT * FROM customer_rnk
 WHERE revenue_rnk <= 5
