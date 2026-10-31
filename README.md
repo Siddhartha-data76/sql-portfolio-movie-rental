@@ -60,7 +60,8 @@ ORDER BY c.dt;
 
 `DENSE_RANK()` with `PARTITION BY` ranks customers inside each store, so ties are handled fairly.
 
-<img src="screenshots/result_2_top5_per_store.png" width="800" alt="Top 5 customers per store">
+<img width="562" height="274" alt="2  Top 5 customers in each store (Q10)" src="https://github.com/user-attachments/assets/0f8d8f18-86a1-4d37-b691-d459f0b212bb" />
+
 
 <details>
 <summary>Show the query</summary>
