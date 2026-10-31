@@ -15,9 +15,8 @@ I built this to practice SQL the way it is used at work: start with a business q
 
 Only 41 of the 267 days in the data have sales. A normal rolling sum skips the empty days, so a "7-day" number can quietly cover weeks. I fixed it with a recursive calendar, so empty days count as 0.
 
-<img src="screenshots/result_1_rolling_7day.png" width="800" alt="Rolling 7-day revenue result">
+<img width="449" height="356" alt="1  Rolling 7-day revenue (Q24)" src="https://github.com/user-attachments/assets/c4a33f96-6d5c-4515-bd94-2622080da69e" />
 
-<img src="screenshots/rolling_7day_chart.png" width="800" alt="Rolling 7-day revenue chart">
 
 <details>
 <summary>Show the query</summary>
