@@ -15,7 +15,7 @@ I built this to practice SQL the way it is used at work: start with a business q
 
 Only 41 of the 267 days in the data have sales. A normal rolling sum skips the empty days, so a "7-day" number can quietly cover weeks. I fixed it with a recursive calendar, so empty days count as 0.
 
-<img width="449" height="356" alt="1  Rolling 7-day revenue (Q24)" src="https://github.com/user-attachments/assets/c4a33f96-6d5c-4515-bd94-2622080da69e" />
+<img width="449" height="356" alt="1  Rolling 7-day revenue (Q24)" src="https://github.com/user-attachments/assets/1c3dd177-8505-4027-9103-58c69023a900" />
 
 
 <details>
@@ -60,7 +60,7 @@ ORDER BY c.dt;
 
 `DENSE_RANK()` with `PARTITION BY` ranks customers inside each store, so ties are handled fairly.
 
-<img width="562" height="274" alt="2  Top 5 customers in each store (Q10)" src="https://github.com/user-attachments/assets/0f8d8f18-86a1-4d37-b691-d459f0b212bb" />
+<img width="562" height="274" alt="2  Top 5 customers in each store (Q10)" src="https://github.com/user-attachments/assets/1e5fd25b-4172-477f-a73d-aead249a392d" />
 
 
 <details>
@@ -71,11 +71,15 @@ WITH customer_rnk AS (
 SELECT
     s.store_id,
     p.customer_id,
+    c.first_name,
+    c.last_name,
     SUM(p.amount) AS revenue,
     DENSE_RANK() OVER(PARTITION BY s.store_id ORDER BY SUM(p.amount) DESC) AS revenue_rnk
 FROM payment p
 JOIN staff st 
 ON p.staff_id = st.staff_id
+JOIN customer c
+ON c.customer_id = p.customer_id
 JOIN store s ON
 s.store_id = st.store_id
 GROUP BY p.customer_id, s.store_id
@@ -91,7 +95,8 @@ ORDER BY store_id, revenue DESC;
 
 A CTE and a subquery turn revenue into a percentage of the total.
 
-<img src="screenshots/result_3_category_share.png" width="800" alt="Revenue share by category">
+<img width="410" height="329" alt="3  Revenue share by category (Q9)" src="https://github.com/user-attachments/assets/6dce383e-b5f6-4454-8167-8d08cb8e0a3e" />
+
 
 <details>
 <summary>Show the query</summary>
@@ -132,9 +137,9 @@ SELECT
 
 ## 🔎 What the data showed
 
-- **Karl Seal** is the top customer, with 221.55 in payments.
-- **Sports** is the top category (7.88% of revenue). The gap to the last one (Music, 5.07%) is small.
-- **Both stores earn almost the same:** 49.68% and 50.32%.
+- **Rolling revenue (Q24):** the highest 7-day revenue was 19,282.62, for the week ending 2 August 2005. Sales come in bursts, with only 41 of 267 days having any payments.
+- **Top customers per store (Q10):** Karl Seal is the only customer in the top 5 of both stores. He is third in each.
+- **Category share (Q9):** Sports leads with 7.88% of revenue and Music is last with 5.07%. The gap is small, so no single category carries the business.
 
 > Payments only exist for May to August 2005 and a few days of February 2006, so I treat growth numbers as practice for the technique, not as real business trends.
 
@@ -175,3 +180,4 @@ Open either query file and run the queries one by one.
 If this helped you practice SQL, a star would make my day. Know a better way to solve one of the queries? Open an issue, I would love to learn from it.
 
 Let's connect on [LinkedIn](https://www.linkedin.com/in/siddhartha-gupta-5025a9195/).
+
