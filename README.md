@@ -97,4 +97,4 @@ After that, open `mavenmovies_date_time_query.sql` or `mavenmovies_main_query_sc
 
 If this helped you practice SQL, a star on the repo would make my day. Found a better way to solve one of the queries? Open an issue or a pull request, I would love to learn from it.
 
-Let's connect on [LinkedIn](https://www.linkedin.com/in/siddhartha-gupta).
+Let's connect on [LinkedIn](https://www.linkedin.com/in/siddhartha-gupta-5025a9195/).
