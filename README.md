@@ -1,11 +1,12 @@
-# sql-portfolio-movie-rental
-SQL analysis of a movie rental database in MySQL: joins, CTEs, window functions, rolling revenue and retention.
-
 # 🎬 Maven Movies SQL Analysis
 
 **Turning a movie rental database into real business answers, using only MySQL.**
 
 Who are the best customers? Which store earns the most? Is revenue growing or slowing down? This project answers questions like these with SQL, from simple joins to window functions and recursive CTEs.
+
+![MySQL](https://img.shields.io/badge/MySQL-8.0-blue?logo=mysql&logoColor=white)
+![SQL](https://img.shields.io/badge/SQL-Analysis-orange)
+![Level](https://img.shields.io/badge/Level-Beginner%20to%20Advanced-green)
 
 ---
 
@@ -20,14 +21,15 @@ I work in finance operations, so I like questions about money, trends and custom
 ## 🗂️ What's inside
 
 ```
-maven-movies-sql-analysis/
+sql-portfolio-movie-rental/
+├── screenshots/                       # Result images used in this README
 ├── mavenmovies_db_schema.sql          # Creates the database, tables and relationships
 ├── mavenmovies_date_time_query.sql    # Date and time analysis
 ├── mavenmovies_main_query_schema.sql  # Main business questions
 └── README.md
 ```
 
-The database is a Sakila-style movie rental business with customers, films, actors, categories, rentals, payments, inventory, stores and staff.
+The data comes from the Maven Movies database, which is based on the Sakila sample database. It is a movie rental business with customers, films, actors, categories, rentals, payments, inventory, stores and staff.
 
 ---
 
@@ -50,6 +52,70 @@ The database is a Sakila-style movie rental business with customers, films, acto
 
 ---
 
+## 📸 Results preview
+
+Every screenshot below is the real output of the query shown, run on the Maven Movies database.
+
+**Who are the best customers?**
+
+![Top 5 customers by revenue](screenshots/01_top_customers_by_revenue.png)
+
+**Which categories bring in the most money?**
+
+![Revenue share by category](screenshots/02_revenue_share_by_category.png)
+
+**Who are the top customers inside each store?**
+
+![Top 5 customers per store](screenshots/03_top5_customers_per_store.png)
+
+**What does revenue look like over time, without gaps?**
+
+![Rolling 7-day revenue table](screenshots/04_rolling_7day_revenue.png)
+
+![Rolling 7-day revenue chart](screenshots/07_rolling_7day_chart.png)
+
+**Which films lead each category?**
+
+![Top 3 films per category](screenshots/05_top3_films_per_category.png)
+
+**Who stays active month after month?**
+
+![Consecutive active months](screenshots/06_consecutive_active_months.png)
+
+---
+
+## 🔎 What the data showed
+
+- **Karl Seal (customer 526) is the top customer overall**, with 221.55 in payments.
+- **Sports is the top category** with 7.88% of revenue. Music is last with 5.07%. The gap is small, so no category carries the business.
+- **Both stores earn almost the same:** 49.68% and 50.32% of revenue.
+- **Sales come in bursts.** The calendar has 267 days, but only 41 have payments. Without the calendar CTE, a "7-day" figure would stretch across weeks.
+
+> **A note on the data:** payments only exist for May to August 2005 and a few days of February 2006. Because of that, month-over-month and year-over-year numbers can look dramatic (for example, February 2006 compared with August 2005). I treat them as practice for the technique, not as real business trends.
+
+---
+
+## 🔥 Featured query: rolling 7-day revenue
+
+Some days have no sales at all. If you skip those days, a "7-day" average is wrong because it quietly covers more than 7 days.
+
+My fix:
+
+1. Add up payments for each day.
+2. Build a full calendar of dates with a recursive CTE.
+3. Join the calendar to the daily revenue.
+4. Turn missing days into zero.
+5. Sum the current day and the 6 days before it.
+
+```sql
+SUM(COALESCE(d.revenue, 0)) OVER (
+    ORDER BY c.dt
+    ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+) AS rolling_7_day_revenue
+```
+
+Now every number really covers 7 days, even in quiet weeks.
+
 ---
 
 ## 🧠 SQL skills used
@@ -68,7 +134,7 @@ The database is a Sakila-style movie rental business with customers, films, acto
 
 ```bash
 git clone https://github.com/Siddhartha-data76/sql-portfolio-movie-rental.git
-cd maven-movies-sql-analysis
+cd sql-portfolio-movie-rental
 ```
 
 Then in MySQL:
@@ -90,6 +156,10 @@ After that, open `mavenmovies_date_time_query.sql` or `mavenmovies_main_query_sc
 - Thinking about what the result means, not just whether the query runs
 
 ---
+
+## 🔭 What's next
+
+I am moving into data analytics and building my skills in **Advanced Excel, Power BI and Python**. More projects will be added here as I go.
 
 ---
 
